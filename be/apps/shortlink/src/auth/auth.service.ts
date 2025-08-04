@@ -14,13 +14,12 @@ import { JwtStrategy } from '@libs/common/strategy/jwt.strategy';
 import { DateDigit } from '@libs/common/enum';
 
 export interface SignUpDto {
-  username: string;
   email: string;
   password: string;
 }
 
 export interface SignInDto {
-  usernameOrEmail: string;
+  email: string;
   password: string;
 }
 
@@ -46,16 +45,15 @@ export class AuthService {
     payload: SignUpDto,
     transaction?: Transaction,
   ): Promise<boolean> {
-    const { username, email, password } = payload;
+    const { email, password } = payload;
 
-    await this.validateUserForSignUp({ username, email });
+    await this.validateUserForSignUp({ email });
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const verificationToken = '000000';
 
     await this.userRepository.createUser(
       {
-        username,
         email,
         password: hashedPassword,
         verification_token: verificationToken,
@@ -72,9 +70,9 @@ export class AuthService {
     userAgent?: string,
     transaction?: Transaction,
   ): Promise<SignInResponse> {
-    const { usernameOrEmail, password } = payload;
+    const { email, password } = payload;
 
-    const user = await this.getUserByUsernameOrEmail(usernameOrEmail);
+    const user = await this.userRepository.getUserByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
@@ -91,7 +89,7 @@ export class AuthService {
     // Generate accessToken
     const tokenPayload: IUserJwtPayload = {
       id: user.id,
-      name: user.username,
+      name: user.email,
     };
 
     const accessToken = this.jwtService.generate(
@@ -123,26 +121,11 @@ export class AuthService {
     );
   }
 
-  private async getUserByUsernameOrEmail(
-    usernameOrEmail: string,
-  ): Promise<UserModel> {
-    if (usernameOrEmail.includes('@')) {
-      return await this.userRepository.getUserByEmail(usernameOrEmail);
-    }
-
-    return await this.userRepository.getUserByUsername(usernameOrEmail);
-  }
 
   private async validateUserForSignUp(payload: {
-    username: string;
     email: string;
   }): Promise<void> {
-    const { username, email } = payload;
-
-    const isUsernameExisted = await this.userRepository.existedBy({ username });
-    if (isUsernameExisted) {
-      throw new BadRequestException('Username already exists');
-    }
+    const { email } = payload;
 
     const isEmailExisted = await this.userRepository.existedBy({ email });
     if (isEmailExisted) {

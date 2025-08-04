@@ -23,14 +23,6 @@ export class AuthSignInDto {
 
 export class AuthSignUpDto {
   @ApiProperty({
-    description: 'Username for the account',
-    example: 'johndoe',
-  })
-  @IsNotEmpty()
-  @IsString()
-  username: string;
-
-  @ApiProperty({
     description: 'User email address',
     example: 'user@example.com',
   })

@@ -8,12 +8,6 @@ export class UserResponseDto {
   id: string;
 
   @ApiProperty({
-    description: 'Username',
-    example: 'johndoe',
-  })
-  username: string;
-
-  @ApiProperty({
     description: 'Email address',
     example: 'user@example.com',
   })
@@ -109,7 +103,7 @@ export class ErrorResponseDto {
 
   @ApiProperty({
     description: 'Error message',
-    example: 'Username already exists',
+    example: 'Email already exists',
   })
   message: string;
 

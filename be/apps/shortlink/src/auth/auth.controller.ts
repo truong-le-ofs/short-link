@@ -30,7 +30,7 @@ export class AuthController {
 
     const result = await this.authService.signIn(
       {
-        usernameOrEmail: payload.email,
+        email: payload.email,
         password: payload.password,
       },
       userAgent,
@@ -41,7 +41,7 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'User sign up',
-    description: 'Create a new user account with username, email and password',
+    description: 'Create a new user account with email and password',
   })
   @ApiResponse({
     status: 201,
@@ -59,7 +59,6 @@ export class AuthController {
   @Post('signup')
   async signup(@Body() payload: AuthSignUpDto) {
     const result = await this.authService.signUp({
-      username: payload.username,
       email: payload.email,
       password: payload.password,
     });

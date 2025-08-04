@@ -10,12 +10,6 @@ module.exports = {
         primaryKey: true,
         defaultValue: Sequelize.DataTypes.UUIDV4,
       },
-      username: {
-        type: Sequelize.STRING(50),
-        allowNull: false,
-        unique: true,
-        comment: 'Username of the user',
-      },
       email: {
         type: Sequelize.STRING(100),
         allowNull: false,

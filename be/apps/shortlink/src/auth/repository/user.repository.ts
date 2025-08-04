@@ -22,22 +22,10 @@ export class UserRepository {
     return user;
   }
 
-  async getUserByUsername(username: string) {
-    const result = await this.userReaderModel.findOne({
-      where: { username },
-    });
-
-    if (!result) throw new BadRequestException(`username is not exist`);
-
-    return result;
-  }
-
   async getUserByEmail(email: string) {
     const result = await this.userReaderModel.findOne({
       where: { email },
     });
-
-    if (!result) throw new BadRequestException(`email is not exist`);
 
     return result;
   }

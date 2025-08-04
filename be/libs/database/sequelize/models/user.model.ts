@@ -21,7 +21,6 @@ import { ShortlinkModel } from './shortlink.model';
   deletedAt: 'deleted_at',
   paranoid: true,
   indexes: [
-    { unique: true, fields: ['username'] },
     { unique: true, fields: ['email'] },
   ],
 })
@@ -30,11 +29,6 @@ export class UserModel extends Model {
   @Default(DataType.UUIDV4)
   @Column(DataType.STRING)
   declare id: string;
-
-  @Unique
-  @AllowNull(false)
-  @Column(DataType.STRING(50))
-  declare username: string;
 
   @Unique
   @AllowNull(false)
