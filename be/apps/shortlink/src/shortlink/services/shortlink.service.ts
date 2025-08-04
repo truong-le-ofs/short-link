@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { Transaction } from 'sequelize';
 import * as bcrypt from 'bcrypt';
-import { ShortlinkRepository } from './repository/shortlink.repository';
-import { ShortlinkScheduleRepository } from './repository/shortlink-schedule.repository';
-import { ShortlinkPasswordRepository } from './repository/shortlink-password.repository';
+import { ShortlinkRepository } from '../repository/shortlink.repository';
+import { ShortlinkScheduleRepository } from '../repository/shortlink-schedule.repository';
+import { ShortlinkPasswordRepository } from '../repository/shortlink-password.repository';
 import {
   CreateShortlinkDto,
   UpdateShortlinkDto,
@@ -17,7 +17,7 @@ import {
   CreatePasswordDto,
   AccessShortlinkDto,
   ShortlinkQueryDto,
-} from './dto/shortlink.dto';
+} from '../dto/shortlink.dto';
 import {
   ShortlinkModel,
   ShortLinkScheduleModel,

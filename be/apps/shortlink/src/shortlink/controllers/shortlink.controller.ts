@@ -17,7 +17,7 @@ import {
   ApiParam,
   ApiBearerAuth,
 } from '@nestjs/swagger';
-import { ShortlinkService } from './shortlink.service';
+import { ShortlinkService } from '../services/shortlink.service';
 import {
   CreateShortlinkDto,
   UpdateShortlinkDto,
@@ -26,7 +26,7 @@ import {
   CreatePasswordDto,
   AccessShortlinkDto,
   ShortlinkQueryDto,
-} from './dto/shortlink.dto';
+} from '../dto/shortlink.dto';
 import {
   ShortlinkResponseDto,
   ShortlinkDetailResponseDto,
@@ -35,7 +35,7 @@ import {
   PasswordResponseDto,
   AccessResponseDto,
   ErrorResponseDto,
-} from './dto/shortlink.response.dto';
+} from '../dto/shortlink.response.dto';
 import { UserAuthGuard } from '@libs/common/guards';
 
 @ApiBearerAuth()

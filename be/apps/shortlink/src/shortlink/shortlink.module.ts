@@ -7,8 +7,8 @@ import {
 } from '@libs/database/sequelize/models';
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ShortlinkController } from './shortlink.controller';
-import { ShortlinkService } from './shortlink.service';
+import { ShortlinkController } from './controllers/shortlink.controller';
+import { ShortlinkService } from './services/shortlink.service';
 import { ShortlinkRepository } from './repository/shortlink.repository';
 import { ShortlinkPasswordRepository } from './repository/shortlink-password.repository';
 import { ShortlinkScheduleRepository } from './repository/shortlink-schedule.repository';
