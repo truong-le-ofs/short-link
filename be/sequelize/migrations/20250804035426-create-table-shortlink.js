@@ -16,6 +16,12 @@ module.exports = {
         unique: true,
         comment: 'Unique short code for the URL',
       },
+      meta_tag: {
+        type: Sequelize.STRING(20),
+        allowNull: true,
+        unique: false,
+        comment: 'Meta tag for the URL',
+      },
       default_url: {
         type: Sequelize.TEXT,
         allowNull: false,

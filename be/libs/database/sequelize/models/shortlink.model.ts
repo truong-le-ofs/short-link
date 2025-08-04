@@ -55,6 +55,9 @@ export class ShortlinkModel extends Model {
   @Column(DataType.INTEGER)
   declare access_limit: number;
 
+  @Column(DataType.TEXT)
+  declare meta_tag: string;
+
   @ForeignKey(() => UserModel)
   @Column(DataType.STRING)
   declare user_id: string;

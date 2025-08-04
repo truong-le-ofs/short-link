@@ -46,6 +46,15 @@ export class CreateShortlinkDto {
   @IsNumber()
   @Min(1)
   access_limit?: number;
+
+  @ApiProperty({
+    description: 'Meta tag for SEO and social sharing (optional)',
+    example: '<meta property="og:title" content="My Title" />',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  meta_tag?: string;
 }
 
 export class UpdateShortlinkDto {
@@ -86,6 +95,15 @@ export class UpdateShortlinkDto {
   @IsNumber()
   @Min(1)
   access_limit?: number;
+
+  @ApiProperty({
+    description: 'Meta tag for SEO and social sharing (optional)',
+    example: '<meta property="og:title" content="Updated Title" />',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  meta_tag?: string;
 }
 
 export class CreateScheduleDto {

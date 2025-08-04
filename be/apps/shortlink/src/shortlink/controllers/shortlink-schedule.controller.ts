@@ -28,7 +28,7 @@ import { UserAuthGuard } from '@libs/common/guards';
 @ApiBearerAuth()
 @UseGuards(UserAuthGuard)
 @Controller('shortlinks')
-export class ShortlinkController {
+export class ShortlinkScheduleController {
   constructor(
     private readonly shortlinkScheduleService: ShortlinkScheduleService,
   ) {}

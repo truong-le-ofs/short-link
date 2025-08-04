@@ -24,7 +24,7 @@ import { ShortlinkPasswordService } from '../services/shortlink-password.service
 @ApiBearerAuth()
 @UseGuards(UserAuthGuard)
 @Controller('shortlinks')
-export class ShortlinkController {
+export class ShortlinkPasswordController {
   constructor(
     private readonly shortlinkPasswordService: ShortlinkPasswordService,
   ) {}

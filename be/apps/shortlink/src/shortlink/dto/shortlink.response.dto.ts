@@ -40,6 +40,13 @@ export class ShortlinkResponseDto {
   access_limit?: number;
 
   @ApiProperty({
+    description: 'Meta tag for SEO and social sharing',
+    example: '<meta property="og:title" content="My Title" />',
+    required: false,
+  })
+  meta_tag?: string;
+
+  @ApiProperty({
     description: 'User ID',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
