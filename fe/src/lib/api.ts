@@ -15,11 +15,9 @@ const apiCall = async <T,>(
   options: RequestInit = {}
 ): Promise<T> => {
   const token = getToken()
-  // Use selective routing: local API for auth/shortlinks, direct backend for others
-  const url = endpoint.startsWith('/auth') 
+  // Use selective routing: local API proxy for shortlinks only, backend direct for auth and others
+  const url = endpoint.startsWith('/shortlinks')
     ? `/api${endpoint}` 
-    : endpoint.startsWith('/shortlinks')
-    ? `/api${endpoint}`
     : `${API_BASE_URL}${endpoint}`
 
   const config: RequestInit = {
