@@ -78,6 +78,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const data = await response.json()
 
       if (!response.ok) {
+        // If 401 Unauthorized, token is likely invalid - logout user
+        if (response.status === 401 && endpoint.startsWith('/api/auth')) {
+          removeToken()
+          setState({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+            error: null,
+          })
+        }
         throw new Error(data.error || data.message || "An error occurred")
       }
 
@@ -90,6 +100,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  // Decode JWT token to get user info (frontend only)
+  const decodeJWT = (token: string) => {
+    try {
+      if (!token || typeof token !== 'string') {
+        return null
+      }
+      const parts = token.split('.')
+      if (parts.length !== 3) {
+        return null
+      }
+      const payload = parts[1]
+      // Add padding if needed for base64 decoding
+      const paddedPayload = payload + '='.repeat((4 - payload.length % 4) % 4)
+      const decoded = JSON.parse(atob(paddedPayload))
+      return decoded
+    } catch (error) {
+      console.error('Failed to decode JWT:', error)
+      return null
+    }
+  }
+
   // Load user from token
   const loadUser = async () => {
     const token = getToken()
@@ -99,31 +130,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     try {
-      const response = await apiCall<ApiResponse<User>>("/api/auth/me")
-      if (response.data) {
+      const decoded = decodeJWT(token)
+      if (decoded && decoded.exp && decoded.exp * 1000 > Date.now()) {
+        // Token is valid and not expired
+        const user = {
+          id: decoded.sub || decoded.id || decoded.userId || 'unknown',
+          email: decoded.email || '',
+          username: decoded.username || decoded.name || decoded.user || '',
+        }
         setState(prev => ({
           ...prev,
-          user: response.data!,
+          user,
           isAuthenticated: true,
+          isLoading: false,
+          error: null,
+        }))
+      } else {
+        // Token is expired or invalid
+        removeToken()
+        setState(prev => ({
+          ...prev,
+          user: null,
+          isAuthenticated: false,
           isLoading: false,
           error: null,
         }))
       }
     } catch (error) {
-      // Only log actual errors, not auth failures (which are normal)
-      const errorMessage = error instanceof Error ? error.message : "Failed to load user"
-      if (!errorMessage.includes("Authorization") && !errorMessage.includes("Invalid token")) {
-        console.error("Failed to load user:", error)
-      }
-      
-      // Clear invalid/expired token
+      console.error("Failed to load user from token:", error)
       removeToken()
       setState(prev => ({
         ...prev,
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        error: null, // Don't set error for auth failures on load
+        error: null,
       }))
     }
   }
@@ -133,7 +174,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setState(prev => ({ ...prev, isLoading: true, error: null }))
     
     try {
-      const response = await apiCall<ApiResponse<{ user: User; token: string }>>(
+      const response = await apiCall<ApiResponse<{ user: User; accessToken: string }>>(
         "/api/auth/login",
         {
           method: "POST",
@@ -141,11 +182,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       )
 
-      if (response.data) {
-        setToken(response.data.token)
+      if (response.data && response.data.accessToken) {
+        setToken(response.data.accessToken)
+        const decoded = decodeJWT(response.data.accessToken)
+        const user = {
+          id: decoded.sub || decoded.id || decoded.userId || 'unknown',
+          email: decoded.email || '',
+          username: decoded.username || decoded.name || decoded.user || '',
+        }
         setState(prev => ({
           ...prev,
-          user: response.data!.user,
+          user,
           isAuthenticated: true,
           isLoading: false,
           error: null,
@@ -169,7 +216,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setState(prev => ({ ...prev, isLoading: true, error: null }))
     
     try {
-      const response = await apiCall<ApiResponse<{ user: User; token: string }>>(
+      const response = await apiCall<ApiResponse<{ user: User; accessToken: string }>>(
         "/api/auth/register",
         {
           method: "POST",
@@ -177,11 +224,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       )
 
-      if (response.data) {
-        setToken(response.data.token)
+      if (response.data && response.data.accessToken) {
+        setToken(response.data.accessToken)
+        const decoded = decodeJWT(response.data.accessToken)
+        const user = {
+          id: decoded.sub || decoded.id || decoded.userId || 'unknown',
+          email: decoded.email || '',
+          username: decoded.username || decoded.name || decoded.user || '',
+        }
         setState(prev => ({
           ...prev,
-          user: response.data!.user,
+          user,
           isAuthenticated: true,
           isLoading: false,
           error: null,
