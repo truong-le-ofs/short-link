@@ -7,11 +7,14 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
+    "build:shortlink": "nest build shortlink",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
+    "start:shortlink": "nest start shortlink",
     "start:dev": "nest start --watch",
+    "start:shortlink:dev": "nest start shortlink --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/be/main",
+    "start:prod": "node dist/apps/shortlink/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -19,7 +22,12 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/be/test/jest-e2e.json",
     "migration:up": "npx sequelize-cli db:migrate",
-    "migration:undo": "npx sequelize-cli db:migrate:undo"
+    "migration:undo": "npx sequelize-cli db:migrate:undo",
+    "docker:build": "docker build -t shortlink-api .",
+    "docker:run": "docker run -p 4000:4000 shortlink-api",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f shortlink-api"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
