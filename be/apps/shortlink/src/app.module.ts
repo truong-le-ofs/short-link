@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ShortlinkModule } from './shortlink/shortlink.module';
-import { DatabaseModule } from '@libs/database/connection';
-import { ConfigModule } from '@nestjs/config';
 import { configuration } from '@libs/config';
+import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from '@libs/database/connection';
+import { AuthModule } from './auth/auth.module';
+import { ShortlinkModule } from './shortlink/shortlink.module';
+
+const modules = [AuthModule, ShortlinkModule];
 
 @Module({
   imports: [
@@ -11,7 +14,7 @@ import { configuration } from '@libs/config';
       load: [configuration],
     }),
     DatabaseModule,
-    ShortlinkModule,
+    ...modules,
   ],
 })
 export class AppModule {}

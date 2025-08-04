@@ -19,4 +19,7 @@ export default () => ({
       },
     },
   },
+  secret: {
+    token: process.env.SECRET_TOKEN || 'secret.token',
+  },
 });
