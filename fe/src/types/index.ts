@@ -2,7 +2,9 @@
 
 export interface User {
   id: string
+  username: string
   email: string
+  is_verified: boolean
   created_at: string
   updated_at: string
 }
@@ -30,18 +32,34 @@ export interface MetaTagData {
 export interface Link {
   id: string
   user_id: string
-  original_url: string
+  default_url: string
   short_code: string
-  title?: string
-  description?: string
-  password?: string
-  expires_at?: string
-  max_clicks?: number
   is_active: boolean
+  expires_at?: string
+  access_limit?: number
   created_at: string
   updated_at: string
-  click_count: number
-  meta_data?: MetaTagData
+  schedules?: Schedule[]
+  passwords?: Password[]
+}
+
+export interface Schedule {
+  id: string
+  target_url: string
+  start_time: string
+  end_time: string
+  shortlink_id: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Password {
+  id: string
+  start_time?: string
+  end_time?: string
+  shortlink_id: string
+  created_at: string
+  updated_at: string
 }
 
 export interface LinkClick {
@@ -79,13 +97,11 @@ export interface AnalyticsData {
 }
 
 export interface CreateLinkData {
-  original_url: string
-  short_code?: string
-  title?: string
-  description?: string
-  password?: string
-  expires_at?: string
-  max_clicks?: number
+  url: string
+  customCode?: string
+  expiresAt?: string
+  accessLimit?: number
+  isActive?: boolean
 }
 
 export interface LinkFormData extends CreateLinkData {
@@ -102,6 +118,7 @@ export interface ApiResponse<T = unknown> {
 }
 
 export interface CreateUserData {
+  username: string
   email: string
   password: string
 }

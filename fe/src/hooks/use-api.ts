@@ -26,7 +26,7 @@ export function useLinks() {
   return useQuery({
     queryKey: queryKeys.links,
     queryFn: async () => {
-      const response = await apiCall<ApiResponse<Link[]>>("/api/links")
+      const response = await apiCall<ApiResponse<Link[]>>("/shortlinks")
       return response.data || []
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
@@ -39,7 +39,7 @@ export function useLink(id: string) {
   return useQuery({
     queryKey: queryKeys.link(id),
     queryFn: async () => {
-      const response = await apiCall<ApiResponse<Link>>(`/api/links/${id}`)
+      const response = await apiCall<ApiResponse<Link>>(`/shortlinks/${id}`)
       return response.data
     },
     enabled: !!id,
@@ -53,7 +53,7 @@ export function useCreateLink() {
   
   return useMutation({
     mutationFn: async (data: CreateLinkData) => {
-      const response = await apiCall<ApiResponse<Link>>("/api/links", {
+      const response = await apiCall<ApiResponse<Link>>("/shortlinks", {
         method: "POST",
         body: JSON.stringify(data),
       })
@@ -77,7 +77,7 @@ export function useUpdateLink() {
   
   return useMutation({
     mutationFn: async ({ id, data }: { id: string; data: UpdateLinkInput }) => {
-      const response = await apiCall<ApiResponse<Link>>(`/api/links/${id}`, {
+      const response = await apiCall<ApiResponse<Link>>(`/shortlinks/${id}`, {
         method: "PUT",
         body: JSON.stringify(data),
       })
@@ -104,7 +104,7 @@ export function useDeleteLink() {
   
   return useMutation({
     mutationFn: async (id: string) => {
-      await apiCall(`/api/links/${id}`, {
+      await apiCall(`/shortlinks/${id}`, {
         method: "DELETE",
       })
       return id
@@ -145,7 +145,7 @@ export function useCheckCustomCode() {
   
   return useMutation({
     mutationFn: async (code: string) => {
-      const response = await apiCall<{ available: boolean }>(`/api/links/check/${code}`)
+      const response = await apiCall<{ available: boolean }>(`/shortlinks/check/${code}`)
       return response
     },
   })
@@ -157,7 +157,7 @@ export function useLinkResolution() {
   
   return useMutation({
     mutationFn: async ({ code, password }: { code: string; password?: string }) => {
-      const response = await apiCall<ApiResponse<{ url: string }>>(`/api/links/resolve/${code}`, {
+      const response = await apiCall<ApiResponse<{ url: string }>>(`/shortlinks/resolve/${code}`, {
         method: "POST",
         body: JSON.stringify({ password }),
       })
@@ -175,7 +175,7 @@ export function usePrefetchLink() {
     return queryClient.prefetchQuery({
       queryKey: queryKeys.link(id),
       queryFn: async () => {
-        const response = await apiCall<ApiResponse<Link>>(`/api/links/${id}`)
+        const response = await apiCall<ApiResponse<Link>>(`/shortlinks/${id}`)
         return response.data
       },
       staleTime: 1 * 60 * 1000,

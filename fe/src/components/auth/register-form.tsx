@@ -15,6 +15,10 @@ import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
 
 const registerSchema = z.object({
+  username: z
+    .string()
+    .min(1, "Username is required")
+    .min(3, "Username must be at least 3 characters"),
   email: z
     .string()
     .min(1, "Email is required")
@@ -52,6 +56,7 @@ export function RegisterForm() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -61,6 +66,7 @@ export function RegisterForm() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       await registerUser({
+        username: data.username,
         email: data.email,
         password: data.password,
       })

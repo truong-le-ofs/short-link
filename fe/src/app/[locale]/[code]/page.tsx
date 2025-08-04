@@ -67,7 +67,7 @@ export default function LinkResolutionPage() {
 
         // If no password needed, redirect immediately
         if (!linkData.password) {
-          handleRedirect(linkData.original_url)
+          handleRedirect(linkData.default_url)
         } else {
           setNeedsPassword(true)
         }
@@ -110,8 +110,8 @@ export default function LinkResolutionPage() {
         return
       }
 
-      if (data.data?.original_url) {
-        handleRedirect(data.data.original_url)
+      if (data.data?.default_url) {
+        handleRedirect(data.data.default_url)
       }
     } catch (error) {
       console.error("Failed to submit password:", error)
@@ -195,7 +195,7 @@ export default function LinkResolutionPage() {
               <p className="text-muted-foreground">Taking you to your destination</p>
               {link && (
                 <div className="mt-4 p-3 bg-muted rounded-md">
-                  <p className="text-sm break-all">{link.original_url}</p>
+                  <p className="text-sm break-all">{link.default_url}</p>
                 </div>
               )}
             </div>

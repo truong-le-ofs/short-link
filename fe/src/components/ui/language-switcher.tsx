@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Languages } from 'lucide-react';
-import { locales } from '@/i18n/request';
+import { routing } from '@/i18n/routing';
 
 const localeNames = {
   en: 'English',
@@ -29,7 +29,7 @@ export function LanguageSwitcher() {
     const segments = currentPath.split('/');
     
     // Remove the current locale segment if it exists
-    if (locales.includes(segments[1] as typeof locales[number])) {
+    if (routing.locales.includes(segments[1] as (typeof routing.locales)[number])) {
       segments[1] = newLocale;
     } else {
       // Add the new locale at the beginning
@@ -49,13 +49,13 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {locales.map((loc) => (
+        {routing.locales.map((loc) => (
           <DropdownMenuItem
             key={loc}
             onClick={() => handleLocaleChange(loc)}
             className={locale === loc ? 'bg-accent' : ''}
           >
-            {localeNames[loc]}
+            {localeNames[loc as keyof typeof localeNames]}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

@@ -3,11 +3,11 @@ import { URL_REGEX, MAX_CUSTOM_CODE_LENGTH, MIN_CUSTOM_CODE_LENGTH } from './con
 
 // Link creation validation schema
 export const createLinkSchema = z.object({
-  original_url: z
+  url: z
     .string()
     .min(1, 'URL is required')
     .regex(URL_REGEX, 'Please enter a valid URL'),
-  short_code: z
+  customCode: z
     .string()
     .min(MIN_CUSTOM_CODE_LENGTH, `Custom code must be at least ${MIN_CUSTOM_CODE_LENGTH} characters`)
     .max(MAX_CUSTOM_CODE_LENGTH, `Custom code must be at most ${MAX_CUSTOM_CODE_LENGTH} characters`)
@@ -26,11 +26,11 @@ export const createLinkSchema = z.object({
     .min(4, 'Password must be at least 4 characters')
     .max(50, 'Password must be less than 50 characters')
     .optional(),
-  expires_at: z
+  expiresAt: z
     .string()
     .datetime('Invalid date format')
     .optional(),
-  max_clicks: z
+  accessLimit: z
     .number()
     .int('Max clicks must be a whole number')
     .min(1, 'Max clicks must be at least 1')
@@ -150,12 +150,12 @@ export const updateLinkSchema = z.object({
     .max(50, 'Password must be less than 50 characters')
     .nullable()
     .optional(),
-  expires_at: z
+  expiresAt: z
     .string()
     .datetime('Invalid date format')
     .nullable()
     .optional(),
-  max_clicks: z
+  accessLimit: z
     .number()
     .int('Max clicks must be a whole number')
     .min(1, 'Max clicks must be at least 1')

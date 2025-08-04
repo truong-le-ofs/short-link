@@ -3,8 +3,18 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Link as LinkIcon, BarChart3, Shield } from "lucide-react"
 import { getTranslations } from 'next-intl/server'
+import { setRequestLocale } from 'next-intl/server'
 
-export default async function Home() {
+export default async function Home({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  
+  // Enable static rendering
+  setRequestLocale(locale);
+  
   const t = await getTranslations('home');
   return (
     <div className="flex-1">

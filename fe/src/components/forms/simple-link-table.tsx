@@ -43,7 +43,7 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
     try {
       setIsLoading(true)
       setError(null)
-      const response = await apiCall<ApiResponse<Link[]>>("/api/links")
+      const response = await apiCall<ApiResponse<Link[]>>("/shortlinks")
       if (response.data) {
         setLinks(response.data)
       } else {
@@ -73,7 +73,7 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
     return (
       link.title?.toLowerCase().includes(query) ||
       link.description?.toLowerCase().includes(query) ||
-      link.original_url.toLowerCase().includes(query) ||
+      link.default_url.toLowerCase().includes(query) ||
       link.short_code.toLowerCase().includes(query)
     )
   })
@@ -96,7 +96,7 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
     }
 
     try {
-      await apiCall(`/api/links/${linkId}`, { method: "DELETE" })
+      await apiCall(`/shortlinks/${linkId}`, { method: "DELETE" })
       toast.success("Link deleted", "The link has been permanently deleted")
       await loadLinks() // Reload links
     } catch (error) {
@@ -246,12 +246,12 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
                       <TableCell>
                         <div className="max-w-xs">
                           <a
-                            href={link.original_url}
+                            href={link.default_url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-blue-600 hover:text-blue-800 hover:underline break-all inline-flex items-center"
                           >
-                            {link.original_url}
+                            {link.default_url}
                             <ExternalLink className="ml-1 h-3 w-3 flex-shrink-0" />
                           </a>
                         </div>

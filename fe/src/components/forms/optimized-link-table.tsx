@@ -96,11 +96,11 @@ function LinkRow({ link, onEdit, onDelete, onPrefetch }: {
         <div className="flex items-center space-x-2">
           <LinkIcon className="h-4 w-4 text-muted-foreground" />
           <div className="flex flex-col min-w-0">
-            <span className="font-medium truncate max-w-[200px]" title={link.title || link.original_url}>
+            <span className="font-medium truncate max-w-[200px]" title={link.title || link.default_url}>
               {link.title || "Untitled"}
             </span>
-            <span className="text-xs text-muted-foreground truncate max-w-[200px]" title={link.original_url}>
-              {link.original_url}
+            <span className="text-xs text-muted-foreground truncate max-w-[200px]" title={link.default_url}>
+              {link.default_url}
             </span>
           </div>
         </div>
@@ -214,7 +214,7 @@ export function OptimizedLinkTable({
     
     const query = localSearchQuery.toLowerCase()
     return links.filter(link => 
-      link.original_url.toLowerCase().includes(query) ||
+      link.default_url.toLowerCase().includes(query) ||
       link.short_code.toLowerCase().includes(query) ||
       link.title?.toLowerCase().includes(query) ||
       link.description?.toLowerCase().includes(query)

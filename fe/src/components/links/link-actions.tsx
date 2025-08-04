@@ -43,7 +43,7 @@ export function LinkActions({ link, onEdit, onDelete, onToggleStatus }: LinkActi
   }
 
   const handleViewOriginal = () => {
-    window.open(link.original_url, '_blank', 'noopener,noreferrer')
+    window.open(link.default_url, '_blank', 'noopener,noreferrer')
   }
 
   const handleEdit = () => {
@@ -118,7 +118,7 @@ export function LinkActions({ link, onEdit, onDelete, onToggleStatus }: LinkActi
               <br />
               <br />
               <span className="font-medium text-foreground">
-                {link.title || link.original_url}
+                {link.title || link.default_url}
               </span>
             </DialogDescription>
           </DialogHeader>

@@ -40,12 +40,10 @@ test.describe('Smoke Tests', () => {
   test('should have proper meta tags', async ({ page }) => {
     await page.goto('/');
     
-    // Check for basic SEO elements (more flexible)
-    await expect(page.locator('title')).toBeVisible();
-    // Just check that meta description exists, regardless of content
-    const metaDesc = page.locator('meta[name="description"]');
-    if (await metaDesc.count() > 0) {
-      await expect(metaDesc).toBeAttached();
-    }
+    // Check that title element exists and has content
+    const title = page.locator('title');
+    await expect(title).toBeAttached();
+    const titleText = await title.textContent();
+    expect(titleText).toBeTruthy(); // Just check it has some content
   });
 });

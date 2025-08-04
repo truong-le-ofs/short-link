@@ -8,12 +8,17 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { locales } from '@/i18n/request';
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
 
 export const metadata: Metadata = {
   title: "URL Shortener - Create, Track, and Manage Short Links",
   description: "Create short, memorable links and get detailed analytics on your link performance. Perfect for marketing campaigns, social media, and content sharing.",
 };
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({locale}));
+}
 
 export default async function LocaleLayout({
   children,
@@ -23,10 +28,14 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // Validate that the incoming locale is valid
-  if (!locales.includes(locale as typeof locales[number])) {
+
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     notFound();
   }
+
+  // Enable static rendering
+  setRequestLocale(locale);
 
   // Providing all messages to the client
   // side is the easiest way to get started

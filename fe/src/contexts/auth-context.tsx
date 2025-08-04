@@ -23,7 +23,7 @@ interface AuthContextType extends AuthState {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 const AUTH_TOKEN_KEY = "url_shortener_token"
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://192.168.18.35:4000"
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({
@@ -57,7 +57,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     options: RequestInit = {}
   ): Promise<T> => {
     const token = getToken()
-    const url = `${API_BASE_URL}${endpoint}`
+    
+    // For auth endpoints, use local Next.js API routes (no base URL)
+    // For other endpoints, use the backend API_BASE_URL
+    const url = endpoint.startsWith('/api/auth') 
+      ? endpoint 
+      : `${API_BASE_URL}${endpoint}`
 
     const config: RequestInit = {
       ...options,
@@ -105,14 +110,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }))
       }
     } catch (error) {
-      console.error("Failed to load user:", error)
+      // Only log actual errors, not auth failures (which are normal)
+      const errorMessage = error instanceof Error ? error.message : "Failed to load user"
+      if (!errorMessage.includes("Authorization") && !errorMessage.includes("Invalid token")) {
+        console.error("Failed to load user:", error)
+      }
+      
+      // Clear invalid/expired token
       removeToken()
       setState(prev => ({
         ...prev,
         user: null,
         isAuthenticated: false,
         isLoading: false,
-        error: error instanceof Error ? error.message : "Failed to load user",
+        error: null, // Don't set error for auth failures on load
       }))
     }
   }

@@ -47,18 +47,18 @@ export function LinkForm({ onSuccess, editingLink, className }: LinkFormProps) {
   } = useForm<LinkFormInput>({
     resolver: zodResolver(linkFormSchema),
     defaultValues: {
-      original_url: editingLink?.original_url || "",
-      short_code: editingLink?.short_code || "",
+      url: editingLink?.default_url || "",
+      customCode: editingLink?.short_code || "",
       title: editingLink?.title || "",
       description: editingLink?.description || "",
       password: "",
       confirmPassword: "",
-      expires_at: editingLink?.expires_at || "",
-      max_clicks: editingLink?.max_clicks || undefined,
+      expiresAt: editingLink?.expires_at || "",
+      accessLimit: editingLink?.access_limit || undefined,
     },
   })
 
-  const shortCode = watch("short_code")
+  const shortCode = watch("customCode")
   const password = watch("password")
 
   // Check if custom code is available
@@ -71,28 +71,28 @@ export function LinkForm({ onSuccess, editingLink, className }: LinkFormProps) {
     // Skip checking if editing the same link's code
     if (editingLink && editingLink.short_code === code) {
       setCodeAvailability({ available: true })
-      clearErrors("short_code")
+      clearErrors("customCode")
       return
     }
 
     setIsCheckingCode(true)
     try {
-      const response = await apiCall<ApiResponse<{ available: boolean }>>(`/api/links/check/${encodeURIComponent(code)}`)
+      const response = await apiCall<ApiResponse<{ available: boolean }>>(`/shortlinks/check/${encodeURIComponent(code)}`)
       
       setCodeAvailability(response.data || null)
       if (!response.data?.available) {
-        setError("short_code", {
+        setError("customCode", {
           type: "manual",
           message: "This custom code is already taken"
         })
       } else {
-        clearErrors("short_code")
+        clearErrors("customCode")
       }
     } catch (error) {
       console.error("Failed to check code availability:", error)
       setCodeAvailability(null)
       // Don't show error to user for API failures, just remove validation
-      clearErrors("short_code")
+      clearErrors("customCode")
     } finally {
       setIsCheckingCode(false)
     }
@@ -113,7 +113,7 @@ export function LinkForm({ onSuccess, editingLink, className }: LinkFormProps) {
         ])
       ) as typeof linkData
 
-      const endpoint = editingLink ? `/api/links/${editingLink.id}` : "/api/links"
+      const endpoint = editingLink ? `/shortlinks/${editingLink.id}` : "/shortlinks"
       const method = editingLink ? "PUT" : "POST"
 
       const response = await apiCall<ApiResponse<Link>>(endpoint, {
@@ -170,34 +170,34 @@ export function LinkForm({ onSuccess, editingLink, className }: LinkFormProps) {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* URL Input */}
         <div className="space-y-2">
-          <Label htmlFor="original_url" className="text-sm font-medium">
+          <Label htmlFor="url" className="text-sm font-medium">
             Original URL *
           </Label>
           <Input
-            id="original_url"
+            id="url"
             type="url"
             placeholder="https://example.com/very-long-url"
-            {...register("original_url")}
+            {...register("url")}
             disabled={isSubmitting}
-            aria-invalid={errors.original_url ? "true" : "false"}
+            aria-invalid={errors.url ? "true" : "false"}
           />
-          {errors.original_url && (
+          {errors.url && (
             <p className="text-sm text-red-500" role="alert">
-              {errors.original_url.message}
+              {errors.url.message}
             </p>
           )}
         </div>
 
         {/* Custom Short Code */}
         <div className="space-y-2">
-          <Label htmlFor="short_code" className="text-sm font-medium">
+          <Label htmlFor="customCode" className="text-sm font-medium">
             Custom Short Code (Optional)
           </Label>
           <div className="relative">
             <Input
-              id="short_code"
+              id="customCode"
               placeholder="my-custom-code"
-              {...register("short_code")}
+              {...register("customCode")}
               disabled={isSubmitting}
               onBlur={(e) => {
                 if (e.target.value && e.target.value.length >= 3) {
@@ -223,9 +223,9 @@ export function LinkForm({ onSuccess, editingLink, className }: LinkFormProps) {
               </div>
             )}
           </div>
-          {errors.short_code && (
+          {errors.customCode && (
             <p className="text-sm text-red-500" role="alert">
-              {errors.short_code.message}
+              {errors.customCode.message}
             </p>
           )}
           {shortCode && shortCode.length >= 3 && isShortCodeAvailable === false && (
