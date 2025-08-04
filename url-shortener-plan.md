@@ -21,7 +21,7 @@ Build a full-featured URL shortener application with user authentication, link m
 - **Backend**: Supabase (PostgreSQL, Auth, Realtime, Edge Functions)
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Analytics**: Supabase Database + Recharts
-- **Deployment**: Docker Compose (Next.js) + Supabase Cloud
+- **Deployment**: Vercel (Frontend) + Supabase Cloud (Backend) + Docker Compose (Local)
 
 ## Time Allocation (6 Hours)
 
