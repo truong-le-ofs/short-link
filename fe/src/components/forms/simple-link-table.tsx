@@ -24,6 +24,12 @@ import {
 import { format } from "date-fns"
 import { type Link, type ApiResponse } from "@/types"
 
+// Extended Link interface with additional runtime properties
+interface ExtendedLink extends Link {
+  click_count?: number
+  passwords?: Array<{ id: string }>
+}
+
 interface SimpleLinkTableProps {
   searchQuery?: string
   onCreateLink?: () => void
@@ -31,7 +37,8 @@ interface SimpleLinkTableProps {
 }
 
 export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: SimpleLinkTableProps) {
-  const [links, setLinks] = useState<Link[]>([])
+  try {
+  const [links, setLinks] = useState<ExtendedLink[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery)
@@ -43,10 +50,13 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
     try {
       setIsLoading(true)
       setError(null)
-      const response = await apiCall<ApiResponse<Link[]>>("/shortlinks")
-      if (response.data) {
-        setLinks(response.data)
+      const response = await apiCall<ApiResponse<{ data: ExtendedLink[], total: number, page: number, limit: number, totalPages: number }>>("/shortlinks")
+      console.log("API Response:", response)
+      if (response.data && response.data.data) {
+        console.log("Links data:", response.data.data)
+        setLinks(response.data.data)
       } else {
+        console.log("No data in response, setting empty array")
         setLinks([])
       }
     } catch (error) {
@@ -66,13 +76,11 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
   }, [])
 
   // Filter links based on search query
-  const filteredLinks = links.filter(link => {
+  const filteredLinks = links.filter((link: ExtendedLink) => {
     const query = (localSearchQuery || searchQuery).toLowerCase()
     if (!query) return true
     
     return (
-      link.title?.toLowerCase().includes(query) ||
-      link.description?.toLowerCase().includes(query) ||
       link.default_url.toLowerCase().includes(query) ||
       link.short_code.toLowerCase().includes(query)
     )
@@ -112,13 +120,13 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
   }
 
   // Check if link reached max clicks
-  const isLinkAtMaxClicks = (link: Link): boolean => {
-    if (!link.max_clicks) return false
-    return link.click_count >= link.max_clicks
+  const isLinkAtMaxClicks = (link: ExtendedLink): boolean => {
+    if (!link.access_limit) return false
+    return (link.click_count || 0) >= link.access_limit
   }
 
   // Get link status
-  const getLinkStatus = (link: Link) => {
+  const getLinkStatus = (link: ExtendedLink) => {
     if (!link.is_active) return { label: 'Inactive', color: 'text-gray-500' }
     if (isLinkExpired(link)) return { label: 'Expired', color: 'text-red-500' }
     if (isLinkAtMaxClicks(link)) return { label: 'Max Clicks', color: 'text-red-500' }
@@ -227,20 +235,11 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
                               /{link.short_code}
                               <Copy className="ml-1 h-3 w-3" />
                             </Button>
-                            {link.password && (
+                            {link.passwords && link.passwords.length > 0 && (
                               <Shield className="h-3 w-3 text-yellow-600" />
                             )}
                           </div>
-                          {link.title && (
-                            <div className="font-medium text-sm">
-                              {link.title}
-                            </div>
-                          )}
-                          {link.description && (
-                            <div className="text-xs text-muted-foreground">
-                              {link.description}
-                            </div>
-                          )}
+
                         </div>
                       </TableCell>
                       <TableCell>
@@ -259,10 +258,10 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
                       <TableCell>
                         <div className="flex items-center space-x-1">
                           <Users className="h-3 w-3 text-muted-foreground" />
-                          <span className="font-medium">{link.click_count}</span>
-                          {link.max_clicks && (
+                          <span className="font-medium">{link.click_count || 0}</span>
+                          {link.access_limit && (
                             <span className="text-xs text-muted-foreground">
-                              / {link.max_clicks}
+                              / {link.access_limit}
                             </span>
                           )}
                         </div>
@@ -328,4 +327,20 @@ export function SimpleLinkTable({ searchQuery = "", onCreateLink, onEditLink }: 
       </CardContent>
     </Card>
   )
+  } catch (renderError) {
+    console.error("SimpleLinkTable render error:", renderError)
+    return (
+      <Card>
+        <CardContent className="text-center py-12 space-y-4">
+          <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Component Error</h3>
+            <p className="text-muted-foreground mb-4">
+              {renderError instanceof Error ? renderError.message : "Unknown error occurred"}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
 }

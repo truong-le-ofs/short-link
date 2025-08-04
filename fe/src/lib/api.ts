@@ -15,10 +15,12 @@ const apiCall = async <T,>(
   options: RequestInit = {}
 ): Promise<T> => {
   const token = getToken()
-  // Use selective routing: local API proxy for shortlinks only, backend direct for auth and others
+  // Route all shortlinks requests through Next.js API proxy to avoid CORS
   const url = endpoint.startsWith('/shortlinks')
-    ? `/api${endpoint}` 
-    : `${API_BASE_URL}${endpoint}`
+    ? `/api${endpoint}`
+    : endpoint.startsWith('/auth') || endpoint.startsWith('/health')
+    ? `${API_BASE_URL}${endpoint}`
+    : `/api${endpoint}`
 
   const config: RequestInit = {
     ...options,

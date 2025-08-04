@@ -58,11 +58,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   ): Promise<T> => {
     const token = getToken()
     
-    // For auth endpoints, use local Next.js API routes (no base URL)
-    // For other endpoints, use the backend API_BASE_URL
-    const url = endpoint.startsWith('/api/auth') 
-      ? endpoint 
-      : `${API_BASE_URL}${endpoint}`
+    // Route all shortlinks requests through Next.js API proxy to avoid CORS
+    const url = endpoint.startsWith('/shortlinks')
+      ? `/api${endpoint}`
+      : endpoint.startsWith('/auth') || endpoint.startsWith('/health')
+      ? `${API_BASE_URL}${endpoint}`
+      : `/api${endpoint}`
 
     const config: RequestInit = {
       ...options,
@@ -79,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (!response.ok) {
         // If 401 Unauthorized, token is likely invalid - logout user
-        if (response.status === 401 && endpoint.startsWith('/api/auth')) {
+        if (response.status === 401) {
           removeToken()
           setState({
             user: null,
