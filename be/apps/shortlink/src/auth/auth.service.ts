@@ -121,7 +121,6 @@ export class AuthService {
     );
   }
 
-
   private async validateUserForSignUp(payload: {
     email: string;
   }): Promise<void> {

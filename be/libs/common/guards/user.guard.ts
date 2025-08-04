@@ -33,18 +33,12 @@ export class UserAuthGuard extends AuthGuard('jwt') {
     }
     request.user = user;
 
-    this.handleRequest(null, user, null, context);
+    this.handleRequest(null, user);
 
     return true;
   }
 
-  handleRequest<TUser = any>(
-    err: any,
-    user: any,
-    _info: any,
-    _context: ExecutionContext,
-    _status?: any,
-  ): TUser {
+  handleRequest<TUser = any>(_err: any, user: any): TUser {
     if (!user) throw new UnauthorizedException();
     return user;
   }

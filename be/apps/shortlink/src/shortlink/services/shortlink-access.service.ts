@@ -5,15 +5,22 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { ShortlinkRepository } from '../repository/shortlink.repository';
+import { ShortlinkAnalyticsService } from './shortlink-analytics.service';
 import { AccessShortlinkDto } from '../dto/shortlink.dto';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class ShortlinkAccessService {
-  constructor(private readonly shortlinkRepository: ShortlinkRepository) {}
+  constructor(
+    private readonly shortlinkRepository: ShortlinkRepository,
+    private readonly analyticsService: ShortlinkAnalyticsService,
+  ) {}
 
   async accessShortlink(
     shortCode: string,
     payload: AccessShortlinkDto,
+    request?: any,
+    transaction?: Transaction,
   ): Promise<{ target_url: string; password_required: boolean }> {
     const shortlink =
       await this.shortlinkRepository.getShortlinkByCode(shortCode);
@@ -53,6 +60,20 @@ export class ShortlinkAccessService {
 
     if (activeSchedules.length > 0) {
       targetUrl = activeSchedules[0].target_url;
+    }
+
+    // Log the access for analytics (only for successful access)
+    if (request) {
+      try {
+        await this.analyticsService.logAccessFromRequest(
+          shortlink.id,
+          request,
+          transaction,
+        );
+      } catch (error) {
+        // Don't fail the redirect if logging fails
+        console.error('Failed to log access:', error);
+      }
     }
 
     return {

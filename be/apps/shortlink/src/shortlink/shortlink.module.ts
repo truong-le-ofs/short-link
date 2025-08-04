@@ -18,6 +18,9 @@ import { ShortlinkAccessService } from './services/shortlink-access.service';
 import { ShortlinkPasswordController } from './controllers/shortlink-password.controller';
 import { ShortlinkScheduleController } from './controllers/shortlink-schedule.controller';
 import { ShortlinkAccessController } from './controllers/shortlink-access.controller';
+import { ShortlinkAnalyticsController } from './controllers/shortlink-analytics.controller';
+import { ShortLinkAccessLogRepository } from './repository/shortlink-access-log.repository';
+import { ShortlinkAnalyticsService } from './services/shortlink-analytics.service';
 
 @Module({
   imports: [
@@ -43,6 +46,7 @@ import { ShortlinkAccessController } from './controllers/shortlink-access.contro
   controllers: [
     ShortlinkController,
     ShortlinkAccessController,
+    ShortlinkAnalyticsController,
     ShortlinkPasswordController,
     ShortlinkScheduleController,
   ],
@@ -50,11 +54,12 @@ import { ShortlinkAccessController } from './controllers/shortlink-access.contro
     ShortlinkService,
     ShortlinkRepository,
     ShortlinkAccessService,
+    ShortlinkAnalyticsService,
     ShortlinkPasswordService,
     ShortlinkScheduleService,
     ShortlinkScheduleRepository,
     ShortlinkPasswordRepository,
-    // ShortLinkAccessLogRepository,
+    ShortLinkAccessLogRepository,
   ],
 })
 export class ShortlinkModule {}

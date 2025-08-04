@@ -20,9 +20,7 @@ import { ShortlinkModel } from './shortlink.model';
   updatedAt: 'updated_at',
   deletedAt: 'deleted_at',
   paranoid: true,
-  indexes: [
-    { unique: true, fields: ['email'] },
-  ],
+  indexes: [{ unique: true, fields: ['email'] }],
 })
 export class UserModel extends Model {
   @PrimaryKey

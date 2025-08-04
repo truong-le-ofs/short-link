@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  Req,
+} from '@nestjs/common';
 import {
   ApiOperation,
   ApiResponse,
@@ -52,10 +60,12 @@ export class ShortlinkAccessController {
   async accessShortlink(
     @Param('shortCode') shortCode: string,
     @Body() payload: AccessShortlinkDto,
+    @Req() req: any,
   ) {
     return await this.shortlinkAccessService.accessShortlink(
       shortCode,
       payload,
+      req,
     );
   }
 
@@ -78,10 +88,14 @@ export class ShortlinkAccessController {
     description: 'Shortlink not found, expired, or password required',
   })
   @Get('s/:shortCode')
-  async redirectShortlink(@Param('shortCode') shortCode: string) {
+  async redirectShortlink(
+    @Param('shortCode') shortCode: string,
+    @Req() req: any,
+  ) {
     const result = await this.shortlinkAccessService.accessShortlink(
       shortCode,
       {},
+      req,
     );
 
     if (result.password_required) {
