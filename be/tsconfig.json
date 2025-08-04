@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowJs": true,
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "resolvePackageJsonExports": true,
@@ -20,6 +21,14 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@libs": [
+        "libs/"
+      ],
+      "@libs/*": [
+        "libs/*"
+      ]
+    }
   }
 }
