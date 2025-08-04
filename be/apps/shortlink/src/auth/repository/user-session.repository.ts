@@ -23,5 +23,4 @@ export class UserSessionRepository {
 
     return session;
   }
-
 }

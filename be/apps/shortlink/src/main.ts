@@ -26,7 +26,10 @@ async function bootstrap() {
     }),
   );
 
-  const config = new DocumentBuilder().setTitle('ShortLink').build();
+  const config = new DocumentBuilder()
+    .setTitle('ShortLink')
+    .addBearerAuth()
+    .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, documentFactory);
 
