@@ -30,8 +30,21 @@ async function bootstrap() {
     .setTitle('ShortLink')
     .addBearerAuth()
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, documentFactory);
+  const document = SwaggerModule.createDocument(app, config);
+  
+  // Setup Swagger UI
+  SwaggerModule.setup('swagger', app, document);
+  
+  // Add JSON endpoints for frontend consumption
+  app.use('/swagger/api-json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(document);
+  });
+  
+  app.use('/swagger/api-document-json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(document);
+  });
 
   await app.listen(4000);
 }

@@ -18,6 +18,37 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - shortlink-network
+
+  shortlink-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shortlink-api
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=shortlink
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - shortlink-network
+    volumes:
+      - ./sequelize:/app/sequelize:ro
+    command: sh -c "npm run migration:up && node dist/apps/shortlink/main.js"
+
+networks:
+  shortlink-network:
+    driver: bridge
 
 volumes:
   postgres_data:
