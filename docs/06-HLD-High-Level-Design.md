@@ -11,7 +11,7 @@
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Web Browser   │◄──►│   Vercel CDN    │◄──►│   Next.js App   │
+│   Web Browser   │◄──►│  Nginx/Docker   │◄──►│   Next.js App   │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │              ┌─────────────────┐             │
@@ -206,7 +206,7 @@ schedules (
 - Code splitting and tree shaking
 
 ### 7.3 Scalability Considerations
-- Horizontal scaling via Vercel
+- Horizontal scaling via Docker Compose
 - Database read replicas
 - Edge function auto-scaling
 - Load balancing
@@ -241,7 +241,7 @@ Local Docker → Preview → Live
 - Production deployment approval
 
 ### 9.3 Monitoring & Logging
-- Vercel Analytics for performance
+- Application monitoring and analytics
 - Supabase logging for backend
 - Error tracking with Sentry (future)
 - Uptime monitoring
@@ -253,7 +253,7 @@ Local Docker → Preview → Live
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
 - **State**: React Query + Context API
-- **Deployment**: Vercel
+- **Deployment**: Docker Compose
 
 ### 10.2 Backend Stack
 - **Database**: Supabase PostgreSQL

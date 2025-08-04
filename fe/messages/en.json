@@ -1,0 +1,194 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "language": "Language"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "links": "Links",
+    "analytics": "Analytics",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "getStarted": "Get Started",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+  "home": {
+    "hero": {
+      "title": "Shorten Your URLs",
+      "subtitle": "Track Everything",
+      "description": "Create short, memorable links and get detailed analytics on your link performance. Perfect for marketing campaigns, social media, and content sharing.",
+      "getStarted": "Get Started",
+      "signIn": "Sign In"
+    },
+    "features": {
+      "easyShortening": {
+        "title": "Easy Link Shortening",
+        "description": "Transform long, complex URLs into short, memorable links with just one click. Custom short codes available."
+      },
+      "detailedAnalytics": {
+        "title": "Detailed Analytics",
+        "description": "Track clicks, monitor traffic sources, and analyze user behavior with comprehensive analytics and reporting tools."
+      },
+      "secureReliable": {
+        "title": "Secure & Reliable",
+        "description": "Password protection, expiration dates, and click limits ensure your links are secure and used as intended."
+      }
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "description": "Join thousands of users who trust our platform for their link management needs.",
+      "action": "Create Your First Short Link"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "description": "Enter your email and password to access your account",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "signIn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "signingIn": "Signing in..."
+    },
+    "register": {
+      "title": "Sign Up",
+      "description": "Create your account to start shortening URLs",
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "signUp": "Sign Up",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "signingUp": "Creating account..."
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 8 characters",
+      "nameRequired": "Full name is required",
+      "nameMin": "Name must be at least 2 characters",
+      "passwordsMatch": "Passwords must match"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back!",
+    "stats": {
+      "totalLinks": "Total Links",
+      "totalClicks": "Total Clicks",
+      "topPerformer": "Top Performer",
+      "clicksToday": "Clicks Today"
+    },
+    "recentLinks": "Recent Links",
+    "viewAll": "View All Links",
+    "createLink": "Create New Link"
+  },
+  "links": {
+    "title": "Links",
+    "description": "Manage all your shortened links",
+    "createNew": "Create New Link",
+    "noLinks": "No links found",
+    "noLinksDescription": "Create your first shortened link to get started.",
+    "table": {
+      "originalUrl": "Original URL",
+      "shortCode": "Short Code",
+      "clicks": "Clicks",
+      "created": "Created",
+      "actions": "Actions"
+    },
+    "actions": {
+      "copy": "Copy",
+      "edit": "Edit",
+      "delete": "Delete",
+      "view": "View"
+    },
+    "form": {
+      "title": "Create Short Link",
+      "editTitle": "Edit Link",
+      "originalUrl": "Original URL",
+      "originalUrlPlaceholder": "Enter the URL you want to shorten",
+      "customCode": "Custom Short Code",
+      "customCodePlaceholder": "Enter custom code (optional)",
+      "password": "Password Protection",
+      "passwordPlaceholder": "Enter password (optional)",
+      "expiryDate": "Expiry Date",
+      "maxClicks": "Maximum Clicks",
+      "maxClicksPlaceholder": "Enter max clicks (optional)",
+      "create": "Create Link",
+      "update": "Update Link",
+      "creating": "Creating...",
+      "updating": "Updating..."
+    },
+    "validation": {
+      "urlRequired": "URL is required",
+      "urlInvalid": "Please enter a valid URL",
+      "codeExists": "This short code is already taken",
+      "codeInvalid": "Short code can only contain letters, numbers, and hyphens",
+      "passwordMin": "Password must be at least 4 characters",
+      "maxClicksMin": "Maximum clicks must be at least 1"
+    }
+  },
+  "analytics": {
+    "title": "Analytics",
+    "description": "View detailed analytics for your links",
+    "overview": "Overview",
+    "clicksOverTime": "Clicks Over Time",
+    "deviceStats": "Device Statistics",
+    "topLinks": "Top Performing Links",
+    "noData": "No analytics data available",
+    "noDataDescription": "Create and share some links to see analytics data.",
+    "devices": {
+      "desktop": "Desktop",
+      "mobile": "Mobile",
+      "tablet": "Tablet",
+      "unknown": "Unknown"
+    },
+    "timeRanges": {
+      "7days": "Last 7 days",
+      "30days": "Last 30 days",
+      "90days": "Last 90 days",
+      "all": "All time"
+    }
+  },
+  "errors": {
+    "general": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "unauthorized": "You are not authorized to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "validation": "Please check your input and try again.",
+    "serverError": "Server error. Please try again later."
+  },
+  "success": {
+    "linkCreated": "Link created successfully!",
+    "linkUpdated": "Link updated successfully!",
+    "linkDeleted": "Link deleted successfully!",
+    "linkCopied": "Link copied to clipboard!",
+    "loginSuccess": "Welcome back!",
+    "registerSuccess": "Account created successfully!"
+  }
+}

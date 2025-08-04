@@ -90,7 +90,7 @@ A modern URL shortening platform with advanced features for link management, ana
 - **Language**: TypeScript for type safety
 - **Styling**: Tailwind CSS + shadcn/ui components
 - **State Management**: React Query for server state
-- **Deployment**: Vercel platform
+- **Deployment**: Docker Compose platform
 
 ### 5.2 Backend
 - **Database**: Supabase PostgreSQL
@@ -104,7 +104,7 @@ A modern URL shortening platform with advanced features for link management, ana
 - **Version Control**: Git with GitHub
 - **CI/CD**: GitHub Actions
 - **Testing**: Jest, Cypress for E2E
-- **Monitoring**: Vercel Analytics + Supabase Monitoring
+- **Monitoring**: Application Analytics + Supabase Monitoring
 
 ## 6. User Tiers
 
@@ -112,7 +112,7 @@ A modern URL shortening platform with advanced features for link management, ana
 - 100 links per month
 - Basic analytics (7 days)
 - Standard support
-- Vercel subdomain
+- Docker subdomain
 
 ### 6.2 Premium Tier ($10/month)
 - Unlimited links

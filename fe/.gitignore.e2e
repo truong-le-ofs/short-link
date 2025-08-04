@@ -1,0 +1,10 @@
+# Playwright Test Artifacts
+/test-results/
+/playwright-report/
+/playwright/.cache/
+e2e/.auth/user.json
+
+# Screenshots and Videos
+/e2e/test-results/
+*.webm
+*.png

@@ -21,7 +21,7 @@ Build a full-featured URL shortener application with user authentication, link m
 - **Backend**: Supabase (PostgreSQL, Auth, Realtime, Edge Functions)
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Analytics**: Supabase Database + Recharts
-- **Deployment**: Vercel (Frontend) + Supabase Cloud (Backend) + Docker Compose (Local)
+- **Deployment**: Docker Compose (Frontend + Production) + Supabase Cloud (Backend)
 
 ## Time Allocation (6 Hours)
 
@@ -601,7 +601,7 @@ export function useRealtimeAnalytics(linkId: string) {
 1. **Database Indexes**: Already included in schema
 2. **Caching**: Use Next.js ISR for public pages
 3. **Rate Limiting**: Implement in Edge Functions
-4. **CDN**: Use Vercel/Cloudflare for static assets
+4. **CDN**: Use Cloudflare or nginx reverse proxy for static assets
 
 ### 13. Security Considerations
 

@@ -30,7 +30,7 @@ This document consolidates all software requirements for the URL Shortener Platf
 ### 2.3 Technical Constraints
 - Next.js 14 with TypeScript
 - Supabase backend services
-- Vercel deployment platform
+- Docker Compose deployment platform
 - Docker for local development
 
 ## 3. System Architecture
@@ -48,7 +48,7 @@ This document consolidates all software requirements for the URL Shortener Platf
 - Real-time subscriptions
 
 ### 3.3 Infrastructure Layer
-- Vercel CDN and hosting
+- Docker Compose and nginx hosting
 - Supabase cloud services
 - Docker containerization
 - GitHub CI/CD pipeline

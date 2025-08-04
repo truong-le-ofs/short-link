@@ -1,0 +1,194 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "delete": "Xóa",
+    "edit": "Chỉnh sửa",
+    "save": "Lưu",
+    "close": "Đóng",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép!",
+    "language": "Ngôn ngữ"
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "dashboard": "Bảng điều khiển",
+    "links": "Liên kết",
+    "analytics": "Phân tích",
+    "signIn": "Đăng nhập",
+    "signOut": "Đăng xuất",
+    "getStarted": "Bắt đầu",
+    "profile": "Hồ sơ",
+    "settings": "Cài đặt"
+  },
+  "home": {
+    "hero": {
+      "title": "Rút gọn URL của bạn",
+      "subtitle": "Theo dõi mọi thứ",
+      "description": "Tạo các liên kết ngắn, dễ nhớ và nhận thống kê chi tiết về hiệu suất liên kết của bạn. Hoàn hảo cho các chiến dịch marketing, mạng xã hội và chia sẻ nội dung.",
+      "getStarted": "Bắt đầu",
+      "signIn": "Đăng nhập"
+    },
+    "features": {
+      "easyShortening": {
+        "title": "Rút gọn liên kết dễ dàng",
+        "description": "Chuyển đổi các URL dài, phức tạp thành các liên kết ngắn, dễ nhớ chỉ với một cú nhấp chuột. Có thể tùy chỉnh mã ngắn."
+      },
+      "detailedAnalytics": {
+        "title": "Phân tích chi tiết",
+        "description": "Theo dõi số lượt nhấp, giám sát nguồn lưu lượng và phân tích hành vi người dùng với các công cụ phân tích và báo cáo toàn diện."
+      },
+      "secureReliable": {
+        "title": "An toàn & Đáng tin cậy",
+        "description": "Bảo vệ bằng mật khẩu, ngày hết hạn và giới hạn số lượt nhấp đảm bảo các liên kết của bạn được sử dụng an toàn và đúng mục đích."
+      }
+    },
+    "cta": {
+      "title": "Sẵn sàng bắt đầu?",
+      "description": "Tham gia cùng hàng ngàn người dùng tin tưởng nền tảng của chúng tôi cho nhu cầu quản lý liên kết.",
+      "action": "Tạo liên kết ngắn đầu tiên"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "description": "Nhập email và mật khẩu để truy cập tài khoản của bạn",
+      "email": "Email",
+      "emailPlaceholder": "Nhập email của bạn",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu",
+      "showPassword": "Hiển thị mật khẩu",
+      "hidePassword": "Ẩn mật khẩu",
+      "signIn": "Đăng nhập",
+      "noAccount": "Chưa có tài khoản?",
+      "signUp": "Đăng ký",
+      "signingIn": "Đang đăng nhập..."
+    },
+    "register": {
+      "title": "Đăng ký",
+      "description": "Tạo tài khoản của bạn để bắt đầu rút gọn URL",
+      "name": "Họ và tên",
+      "namePlaceholder": "Nhập họ và tên",
+      "email": "Email",
+      "emailPlaceholder": "Nhập email của bạn",
+      "password": "Mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "confirmPasswordPlaceholder": "Xác nhận mật khẩu của bạn",
+      "showPassword": "Hiển thị mật khẩu",
+      "hidePassword": "Ẩn mật khẩu",
+      "signUp": "Đăng ký",
+      "hasAccount": "Đã có tài khoản?",
+      "signIn": "Đăng nhập",
+      "signingUp": "Đang tạo tài khoản..."
+    },
+    "validation": {
+      "emailRequired": "Email là bắt buộc",
+      "emailInvalid": "Vui lòng nhập địa chỉ email hợp lệ",
+      "passwordRequired": "Mật khẩu là bắt buộc",
+      "passwordMin": "Mật khẩu phải có ít nhất 8 ký tự",
+      "nameRequired": "Họ và tên là bắt buộc",
+      "nameMin": "Tên phải có ít nhất 2 ký tự",
+      "passwordsMatch": "Mật khẩu phải khớp nhau"
+    }
+  },
+  "dashboard": {
+    "title": "Bảng điều khiển",
+    "welcome": "Chào mừng trở lại!",
+    "stats": {
+      "totalLinks": "Tổng số liên kết",
+      "totalClicks": "Tổng số lượt nhấp",
+      "topPerformer": "Hiệu suất cao nhất",
+      "clicksToday": "Lượt nhấp hôm nay"
+    },
+    "recentLinks": "Liên kết gần đây",
+    "viewAll": "Xem tất cả liên kết",
+    "createLink": "Tạo liên kết mới"
+  },
+  "links": {
+    "title": "Liên kết",
+    "description": "Quản lý tất cả các liên kết đã rút gọn",
+    "createNew": "Tạo liên kết mới",
+    "noLinks": "Không tìm thấy liên kết nào",
+    "noLinksDescription": "Tạo liên kết rút gọn đầu tiên của bạn để bắt đầu.",
+    "table": {
+      "originalUrl": "URL gốc",
+      "shortCode": "Mã ngắn",
+      "clicks": "Lượt nhấp",
+      "created": "Đã tạo",
+      "actions": "Hành động"
+    },
+    "actions": {
+      "copy": "Sao chép",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "view": "Xem"
+    },
+    "form": {
+      "title": "Tạo liên kết ngắn",
+      "editTitle": "Chỉnh sửa liên kết",
+      "originalUrl": "URL gốc",
+      "originalUrlPlaceholder": "Nhập URL bạn muốn rút gọn",
+      "customCode": "Mã ngắn tùy chỉnh",
+      "customCodePlaceholder": "Nhập mã tùy chỉnh (tùy chọn)",
+      "password": "Bảo vệ bằng mật khẩu",
+      "passwordPlaceholder": "Nhập mật khẩu (tùy chọn)",
+      "expiryDate": "Ngày hết hạn",
+      "maxClicks": "Số lượt nhấp tối đa",
+      "maxClicksPlaceholder": "Nhập số lượt nhấp tối đa (tùy chọn)",
+      "create": "Tạo liên kết",
+      "update": "Cập nhật liên kết",
+      "creating": "Đang tạo...",
+      "updating": "Đang cập nhật..."
+    },
+    "validation": {
+      "urlRequired": "URL là bắt buộc",
+      "urlInvalid": "Vui lòng nhập URL hợp lệ",
+      "codeExists": "Mã ngắn này đã được sử dụng",
+      "codeInvalid": "Mã ngắn chỉ có thể chứa chữ cái, số và dấu gạch ngang",
+      "passwordMin": "Mật khẩu phải có ít nhất 4 ký tự",
+      "maxClicksMin": "Số lượt nhấp tối đa phải ít nhất là 1"
+    }
+  },
+  "analytics": {
+    "title": "Phân tích",
+    "description": "Xem phân tích chi tiết cho các liên kết của bạn",
+    "overview": "Tổng quan",
+    "clicksOverTime": "Lượt nhấp theo thời gian",
+    "deviceStats": "Thống kê thiết bị",
+    "topLinks": "Liên kết hiệu suất cao nhất",
+    "noData": "Không có dữ liệu phân tích",
+    "noDataDescription": "Tạo và chia sẻ một số liên kết để xem dữ liệu phân tích.",
+    "devices": {
+      "desktop": "Máy tính",
+      "mobile": "Di động",
+      "tablet": "Máy tính bảng",
+      "unknown": "Không xác định"
+    },
+    "timeRanges": {
+      "7days": "7 ngày qua",
+      "30days": "30 ngày qua",
+      "90days": "90 ngày qua",
+      "all": "Tất cả thời gian"
+    }
+  },
+  "errors": {
+    "general": "Đã xảy ra lỗi. Vui lòng thử lại.",
+    "network": "Lỗi mạng. Vui lòng kiểm tra kết nối của bạn.",
+    "unauthorized": "Bạn không được phép thực hiện hành động này.",
+    "notFound": "Không tìm thấy tài nguyên được yêu cầu.",
+    "validation": "Vui lòng kiểm tra thông tin đầu vào và thử lại.",
+    "serverError": "Lỗi máy chủ. Vui lòng thử lại sau."
+  },
+  "success": {
+    "linkCreated": "Liên kết đã được tạo thành công!",
+    "linkUpdated": "Liên kết đã được cập nhật thành công!",
+    "linkDeleted": "Liên kết đã được xóa thành công!",
+    "linkCopied": "Liên kết đã được sao chép vào clipboard!",
+    "loginSuccess": "Chào mừng trở lại!",
+    "registerSuccess": "Tài khoản đã được tạo thành công!"
+  }
+}

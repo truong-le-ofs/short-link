@@ -27,7 +27,7 @@
 - Mobile responsiveness
 
 **Out of Scope:**
-- Third-party service reliability (Supabase, Vercel)
+- Third-party service reliability (Supabase, Docker infrastructure)
 - Network infrastructure testing
 - Operating system specific testing
 
@@ -218,7 +218,7 @@ describe('LinkService', () => {
 
 ### 7.1 Environment Setup
 - **Development**: Local Docker environment
-- **Staging**: Vercel preview deployment
+- **Staging**: Docker Compose staging deployment
 - **Production**: Live environment (limited testing)
 
 ### 7.2 Test Data Management

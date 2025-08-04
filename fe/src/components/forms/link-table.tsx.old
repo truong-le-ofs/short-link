@@ -1,0 +1,411 @@
+"use client"
+
+import { useState, useMemo, useEffect } from "react"
+import { Link } from "@/types"
+import { useLinks } from "@/hooks/use-links"
+import { LinkActions } from "@/components/links/link-actions"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Badge } from "@/components/ui/badge"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Search,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
+  Copy,
+  Calendar,
+  Users,
+  Shield,
+  AlertCircle,
+} from "lucide-react"
+import { format } from "date-fns"
+import { useToast } from "@/hooks/use-toast"
+
+type SortField = 'title' | 'created_at' | 'click_count' | 'original_url'
+type SortDirection = 'asc' | 'desc'
+type StatusFilter = 'all' | 'active' | 'expired'
+
+interface LinkTableProps {
+  searchQuery?: string
+  onCreateLink?: () => void
+}
+
+export function LinkTable({ searchQuery = "", onCreateLink }: LinkTableProps) {
+  const {
+    links,
+    isLoading,
+    error,
+    deleteLink,
+    toggleLinkStatus,
+    getFilteredLinks,
+  } = useLinks()
+
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery)
+  const [sortField, setSortField] = useState<SortField>('created_at')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc')
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+  const [currentPage, setCurrentPage] = useState(1)
+  const { toast } = useToast()
+
+  const itemsPerPage = 10
+
+  // Get filtered and sorted links
+  const filteredAndSortedLinks = useMemo(() => {
+    const searchTerm = localSearchQuery || searchQuery
+    const filtered = getFilteredLinks(searchTerm, statusFilter)
+
+    // Sort links
+    const sorted = [...filtered].sort((a, b) => {
+      let aValue: string | number = a[sortField]
+      let bValue: string | number = b[sortField]
+
+      // Handle different field types
+      if (sortField === 'created_at') {
+        aValue = new Date(aValue as string).getTime()
+        bValue = new Date(bValue as string).getTime()
+      } else if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase()
+        bValue = (bValue as string).toLowerCase()
+      }
+
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1
+      return 0
+    })
+
+    return sorted
+  }, [localSearchQuery, searchQuery, statusFilter, sortField, sortDirection, getFilteredLinks])
+
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedLinks.length / itemsPerPage)
+  const paginatedLinks = filteredAndSortedLinks.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [localSearchQuery, searchQuery, statusFilter, sortField, sortDirection])
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      setSortField(field)
+      setSortDirection('asc')
+    }
+  }
+
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) return <ArrowUpDown className="ml-2 h-4 w-4" />
+    return sortDirection === 'asc' 
+      ? <ArrowUp className="ml-2 h-4 w-4" />
+      : <ArrowDown className="ml-2 h-4 w-4" />
+  }
+
+  const handleCopyShortUrl = async (shortCode: string) => {
+    try {
+      const shortUrl = `${process.env.NEXT_PUBLIC_SHORT_URL_BASE || 'http://localhost:3000'}/${shortCode}`
+      await navigator.clipboard.writeText(shortUrl)
+      toast.success("Copied to clipboard", "Short URL copied successfully")
+    } catch {
+      toast.error("Failed to copy", "Could not copy URL to clipboard")
+    }
+  }
+
+  const isLinkExpired = (link: Link): boolean => {
+    if (!link.expires_at) return false
+    return new Date(link.expires_at) < new Date()
+  }
+
+  const isLinkAtMaxClicks = (link: Link): boolean => {
+    if (!link.max_clicks) return false
+    return link.click_count >= link.max_clicks
+  }
+
+  const getLinkStatus = (link: Link) => {
+    if (!link.is_active) return { label: 'Inactive', variant: 'secondary' as const }
+    if (isLinkExpired(link)) return { label: 'Expired', variant: 'destructive' as const }
+    if (isLinkAtMaxClicks(link)) return { label: 'Max Clicks', variant: 'destructive' as const }
+    return { label: 'Active', variant: 'default' as const }
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-12 space-y-4">
+        <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Error loading links</h3>
+          <p className="text-muted-foreground mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()}>
+            Try Again
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      {/* Search and Filters */}
+      <div className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 md:items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search links by title, URL, or code..."
+            value={localSearchQuery}
+            onChange={(e) => setLocalSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+        </div>
+        <div className="flex space-x-2">
+          <Button
+            variant={statusFilter === 'all' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setStatusFilter('all')}
+          >
+            All ({links.length})
+          </Button>
+          <Button
+            variant={statusFilter === 'active' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setStatusFilter('active')}
+          >
+            Active ({links.filter(l => l.is_active && !isLinkExpired(l)).length})
+          </Button>
+          <Button
+            variant={statusFilter === 'expired' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setStatusFilter('expired')}
+          >
+            Expired ({links.filter(l => !l.is_active || isLinkExpired(l)).length})
+          </Button>
+        </div>
+      </div>
+
+      {/* Table */}
+      {isLoading ? (
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full" />
+          ))}
+        </div>
+      ) : filteredAndSortedLinks.length === 0 ? (
+        <div className="text-center py-12 space-y-4">
+          <div className="h-12 w-12 text-muted-foreground mx-auto mb-4">
+            🔗
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">
+              {links.length === 0 ? "No links yet" : "No links found"}
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              {links.length === 0
+                ? "Create your first shortened link to get started"
+                : "Try adjusting your search or filter criteria"
+              }
+            </p>
+            {links.length === 0 && onCreateLink && (
+              <Button onClick={onCreateLink} variant="outline">
+                Create Link
+              </Button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead 
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSort('title')}
+                  >
+                    <div className="flex items-center">
+                      Link
+                      {getSortIcon('title')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSort('original_url')}
+                  >
+                    <div className="flex items-center">
+                      Original URL
+                      {getSortIcon('original_url')}
+                    </div>
+                  </TableHead>
+                  <TableHead 
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSort('click_count')}
+                  >
+                    <div className="flex items-center">
+                      Clicks
+                      {getSortIcon('click_count')}
+                    </div>
+                  </TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead 
+                    className="cursor-pointer select-none"
+                    onClick={() => handleSort('created_at')}
+                  >
+                    <div className="flex items-center">
+                      Created
+                      {getSortIcon('created_at')}
+                    </div>
+                  </TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {paginatedLinks.map((link) => {
+                  const status = getLinkStatus(link)
+                  return (
+                    <TableRow key={link.id}>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <div className="flex items-center space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-auto p-1 font-mono text-blue-600 hover:text-blue-800"
+                              onClick={() => handleCopyShortUrl(link.short_code)}
+                            >
+                              /{link.short_code}
+                              <Copy className="ml-1 h-3 w-3" />
+                            </Button>
+                            {link.password && (
+                              <Shield className="h-3 w-3 text-yellow-600" title="Password protected" />
+                            )}
+                          </div>
+                          {link.title && (
+                            <div className="font-medium text-sm">
+                              {link.title}
+                            </div>
+                          )}
+                          {link.description && (
+                            <div className="text-xs text-muted-foreground">
+                              {link.description}
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="max-w-xs">
+                          <a
+                            href={link.original_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-blue-600 hover:text-blue-800 hover:underline break-all"
+                          >
+                            {link.original_url}
+                          </a>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-1">
+                          <Users className="h-3 w-3 text-muted-foreground" />
+                          <span className="font-medium">{link.click_count}</span>
+                          {link.max_clicks && (
+                            <span className="text-xs text-muted-foreground">
+                              / {link.max_clicks}
+                            </span>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="space-y-1">
+                          <Badge variant={status.variant} className="text-xs">
+                            {status.label}
+                          </Badge>
+                          {link.expires_at && (
+                            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
+                              <Calendar className="h-3 w-3" />
+                              <span>
+                                Expires {format(new Date(link.expires_at), 'MMM d, yyyy')}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-sm text-muted-foreground">
+                          {format(new Date(link.created_at), 'MMM d, yyyy')}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {format(new Date(link.created_at), 'h:mm a')}
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <LinkActions
+                          link={link}
+                          onDelete={deleteLink}
+                          onToggleStatus={toggleLinkStatus}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-muted-foreground">
+                Showing {((currentPage - 1) * itemsPerPage) + 1} to{' '}
+                {Math.min(currentPage * itemsPerPage, filteredAndSortedLinks.length)} of{' '}
+                {filteredAndSortedLinks.length} links
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <div className="flex items-center space-x-1">
+                  {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+                    const page = i + 1
+                    return (
+                      <Button
+                        key={page}
+                        variant={currentPage === page ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => setCurrentPage(page)}
+                      >
+                        {page}
+                      </Button>
+                    )
+                  })}
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
